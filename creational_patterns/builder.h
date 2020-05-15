@@ -5,6 +5,9 @@
 #include <memory>
 #include <iostream>
 
+namespace Builder
+{
+
 class Car
 {
 	std::string m_color;
@@ -126,4 +129,5 @@ public:
 	}
 };
 
+} // namespace Builder
 #endif // BUILDER_H

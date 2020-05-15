@@ -5,6 +5,9 @@
 #include <vector>
 #include <memory>
 
+namespace FactoryMethod
+{
+
 class Room
 {
 	int walls_number;
@@ -133,4 +136,6 @@ public:
 		return ordinary_room;
 	}
 };
+
+} // namespace FactoryMethod
 #endif // FACTORY_METHOD_H
