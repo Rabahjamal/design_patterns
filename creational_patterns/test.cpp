@@ -2,6 +2,9 @@
 #include "factory_method.h"
 #include "abstract_factory.h"
 #include "prototype.h"
+#include "singleton.h"
+
+#include <thread>
 
 #define CATCH_CONFIG_MAIN
 #include <catch.hpp>
@@ -114,7 +117,33 @@ TEST_CASE("prototype")
 	cout << circle_copy->get_color() << endl;
 	cout << rectangle->get_color() << endl;
 	cout << rectangle_copy->get_color() << endl;
+}
 
 
+TEST_CASE("singleton")
+{
+	Singleton::print_number_of_instances();
 
+	Singleton* resource;
+
+	vector<thread> threads(100);
+
+#pragma omp parallel for
+	for(size_t i = 0; i < 100; i++)
+	{
+		resource = Singleton::get_resource();
+//		thread t([&]()
+//		{
+//			resource = Singleton::get_resource();
+//		});
+//		threads[i] = std::move(t);
+	}
+
+//	for(size_t i = 0; i < threads.size(); i++)
+//	{
+//		threads[i].join();
+//	}
+
+
+	Singleton::print_number_of_instances();
 }
