@@ -119,31 +119,17 @@ TEST_CASE("prototype")
 	cout << rectangle_copy->get_color() << endl;
 }
 
-
 TEST_CASE("singleton")
 {
 	Singleton::print_number_of_instances();
 
-	Singleton* resource;
-
-	vector<thread> threads(100);
+	vector<shared_ptr<Singleton>> resources(100);
 
 #pragma omp parallel for
 	for(size_t i = 0; i < 100; i++)
 	{
-		resource = Singleton::get_resource();
-//		thread t([&]()
-//		{
-//			resource = Singleton::get_resource();
-//		});
-//		threads[i] = std::move(t);
+		resources[i] = Singleton::get_resource();
 	}
-
-//	for(size_t i = 0; i < threads.size(); i++)
-//	{
-//		threads[i].join();
-//	}
-
 
 	Singleton::print_number_of_instances();
 }

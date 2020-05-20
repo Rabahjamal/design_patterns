@@ -9,7 +9,7 @@
 class Singleton
 {
 
-	static std::unique_ptr<Singleton> resource;
+	static std::shared_ptr<Singleton> resource;
 	static int number_of_instances;
 	static std::once_flag resource_flag;
 
@@ -22,12 +22,12 @@ public:
 	Singleton(const Singleton& other) = delete;
 	void operator=(const Singleton& other) = delete;
 
-	static Singleton* get_resource()
+	static std::shared_ptr<Singleton> get_resource()
 	{
 
-		std::call_once(resource_flag, [&](){resource = std::unique_ptr<Singleton>(new Singleton());});
+		std::call_once(resource_flag, [&](){resource = std::shared_ptr<Singleton>(new Singleton());});
 
-		return resource.get();
+		return resource;
 	}
 
 	static void print_number_of_instances()
@@ -41,7 +41,7 @@ public:
 	}
 };
 
-std::unique_ptr<Singleton> Singleton::resource = nullptr;
+std::shared_ptr<Singleton> Singleton::resource = nullptr;
 int Singleton::number_of_instances = 0;
 std::once_flag Singleton::resource_flag;
 
