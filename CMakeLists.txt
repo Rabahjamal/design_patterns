@@ -9,3 +9,4 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 add_subdirectory(creational_patterns)
+add_subdirectory(structural_patterns)
