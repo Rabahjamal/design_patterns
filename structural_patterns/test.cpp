@@ -1,6 +1,7 @@
 #include "adapter.h"
 #include "bridge.h"
 #include "composite.h"
+#include "decorator.h"
 
 #define CATCH_CONFIG_MAIN
 #include <catch.hpp>
@@ -54,4 +55,39 @@ TEST_CASE("Composite")
 	folder1->add(folder2.get());
 
 	folder1->copy();
+}
+
+TEST_CASE("Decorator")
+{
+	using namespace Decorator;
+
+	unique_ptr<DataSource> data_source(new FileDataSource("koko.txt"));
+
+	data_source->write_data(vector<char>());
+
+	cout << "------------------------------------------------" << endl;
+
+	unique_ptr<DataSource> enc_decorator(new EncryptionDecorator(data_source.get()));
+
+	enc_decorator->write_data(vector<char>());
+
+	cout << "------------------------------------------------" << endl;
+
+	unique_ptr<DataSource> compress_decorator(new CompressionDecorator(enc_decorator.get()));
+
+	compress_decorator->write_data(vector<char>());
+
+	cout << "------------------------------------------------" << endl;
+
+	compress_decorator->read_data();
+
+	cout << "------------------------------------------------" << endl;
+
+	enc_decorator->read_data();
+
+	cout << "------------------------------------------------" << endl;
+
+	data_source->read_data();
+
+
 }
