@@ -2,6 +2,7 @@
 #include "bridge.h"
 #include "composite.h"
 #include "decorator.h"
+#include "proxy.h"
 
 #define CATCH_CONFIG_MAIN
 #include <catch.hpp>
@@ -89,5 +90,19 @@ TEST_CASE("Decorator")
 
 	data_source->read_data();
 
+
+}
+
+TEST_CASE("Proxy")
+{
+	using namespace Proxy;
+
+	HttpDownloader* http_downloader = new RealHttpDownloader();
+	unique_ptr<HttpDownloader> proxy_http_downloader =
+			make_unique<ProxyHttpDownloader>(http_downloader);
+
+	string url = "http://koko/dodo";
+
+	proxy_http_downloader->download(url);
 
 }

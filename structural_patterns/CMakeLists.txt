@@ -3,4 +3,5 @@ add_executable(structural_patterns
     bridge.h
     composite.h
     decorator.h
+    proxy.h
     test.cpp)
