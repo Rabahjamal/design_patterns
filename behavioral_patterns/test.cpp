@@ -1,4 +1,5 @@
 #include "chain_of_responsibility.h"
+#include "command.h"
 
 #define CATCH_CONFIG_MAIN
 #include <catch.hpp>
@@ -22,4 +23,22 @@ TEST_CASE("chain of responsibility")
 	{
 		cout << "all checks passed!" << endl;
 	}
+}
+
+TEST_CASE("command")
+{
+	using namespace Command;
+
+	Light light;
+
+	unique_ptr<ICommand> on_command = make_unique<TurnOnCommand>(&light);
+
+	unique_ptr<Switch> light_switch = make_unique<Switch>(on_command.get());
+
+	light_switch->press();
+
+	unique_ptr<ICommand> off_command = make_unique<TurnOffCommand>(&light);
+	light_switch = make_unique<Switch>(off_command.get());
+
+	light_switch->press();
 }
