@@ -1,5 +1,6 @@
 #include "chain_of_responsibility.h"
 #include "command.h"
+#include "iterator.h"
 
 #define CATCH_CONFIG_MAIN
 #include <catch.hpp>
@@ -41,4 +42,22 @@ TEST_CASE("command")
 	light_switch = make_unique<Switch>(off_command.get());
 
 	light_switch->press();
+}
+
+TEST_CASE("iterator")
+{
+	Iterator::MessageCollection mcl;
+
+	mcl.add_message(Iterator::Message{1, "first message"});
+	mcl.add_message(Iterator::Message{2, "second message"});
+	mcl.add_message(Iterator::Message{3, "third message"});
+
+	Iterator::Iterator* it = mcl.create_iterator();
+
+	while(it->has_next())
+	{
+		Iterator::Message m = std::any_cast<Iterator::Message>(it->next());
+		cout << m.message_id << ": " << m.message_content << endl;
+	}
+
 }
