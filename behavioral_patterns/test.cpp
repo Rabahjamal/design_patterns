@@ -1,6 +1,7 @@
 #include "chain_of_responsibility.h"
 #include "command.h"
 #include "iterator.h"
+#include "mediator.h"
 
 #define CATCH_CONFIG_MAIN
 #include <catch.hpp>
@@ -60,4 +61,25 @@ TEST_CASE("iterator")
 		cout << m.message_id << ": " << m.message_content << endl;
 	}
 
+}
+
+
+TEST_CASE("mediator")
+{
+	using namespace MediatorPattern;
+
+	unique_ptr<Mediator> chat_room = make_unique<ChatRoom>();
+
+	unique_ptr<User> user1 = make_unique<ChatUser>(chat_room.get(), "1", "Ali");
+	unique_ptr<User> user2 = make_unique<ChatUser>(chat_room.get(), "2", "Ahmed");
+	unique_ptr<User> user3 = make_unique<ChatUser>(chat_room.get(), "3", "Sami");
+	unique_ptr<User> user4 = make_unique<ChatUser>(chat_room.get(), "4", "Sara");
+
+	chat_room->add_user(user1.get());
+	chat_room->add_user(user2.get());
+	chat_room->add_user(user3.get());
+	chat_room->add_user(user4.get());
+
+	user1->send("Hello Ahmed", "2");
+	user2->send("what's up bro", "1");
 }
