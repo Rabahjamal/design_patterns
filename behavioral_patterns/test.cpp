@@ -2,6 +2,7 @@
 #include "command.h"
 #include "iterator.h"
 #include "mediator.h"
+#include "memento.h"
 
 #define CATCH_CONFIG_MAIN
 #include <catch.hpp>
@@ -82,4 +83,24 @@ TEST_CASE("mediator")
 
 	user1->send("Hello Ahmed", "2");
 	user2->send("what's up bro", "1");
+}
+
+TEST_CASE("memento")
+{
+	using namespace Memento;
+
+	Article article(1, "koko", "first article");
+
+	cout << article << endl;
+
+	unique_ptr<ArticleMemento> memento = article.create_memento();
+
+	article.set_title("fofo");
+	article.set_content("first article - modified");
+
+	cout << article << endl;
+
+	article.restore(memento);
+
+	cout << article << endl;
 }

@@ -3,4 +3,5 @@ add_executable(behavioral_patterns
     command.h
     iterator.h
     mediator.h
+    memento.h
     test.cpp)
