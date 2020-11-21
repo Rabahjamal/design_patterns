@@ -3,6 +3,7 @@
 #include "iterator.h"
 #include "mediator.h"
 #include "memento.h"
+#include "observer.h"
 
 #define CATCH_CONFIG_MAIN
 #include <catch.hpp>
@@ -103,4 +104,48 @@ TEST_CASE("memento")
 	article.restore(memento);
 
 	cout << article << endl;
+}
+
+TEST_CASE("Observer")
+{
+	using namespace ObserverPattern;
+
+	std::unique_ptr<Observer> ms1 = std::make_unique<MessageSubscriberOne>();
+	std::unique_ptr<Observer> ms2 = std::make_unique<MessageSubscriberTwo>();
+	std::unique_ptr<Observer> ms3_1 = std::make_unique<MessageSubscriberThree>();
+	std::unique_ptr<Observer> ms3_2 = std::make_unique<MessageSubscriberThree>();
+
+	unique_ptr<Subject> message_publisher = make_unique<MessagePublisher>();
+
+	message_publisher->attach(ms1.get());
+	message_publisher->attach(ms2.get());
+
+	message_publisher->notify("koko");
+
+	cout << "----------------------------------" << endl;
+
+	message_publisher->detach(ms1.get());
+	message_publisher->attach(ms3_1.get());
+
+	message_publisher->notify("soso");
+
+	cout << "----------------------------------" << endl;
+
+	message_publisher->detach(ms2.get());
+	message_publisher->attach(ms3_2.get());
+
+	message_publisher->notify("fofo");
+
+	cout << "----------------------------------" << endl;
+
+	message_publisher->detach(ms3_1.get());
+
+	message_publisher->notify("toto");
+
+	cout << "----------------------------------" << endl;
+
+	message_publisher->detach(ms3_2.get());
+
+	message_publisher->notify("zozo");
+
 }
