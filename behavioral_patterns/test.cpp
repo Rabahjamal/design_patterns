@@ -4,6 +4,7 @@
 #include "mediator.h"
 #include "memento.h"
 #include "observer.h"
+#include "state.h"
 
 #define CATCH_CONFIG_MAIN
 #include <catch.hpp>
@@ -148,4 +149,27 @@ TEST_CASE("Observer")
 
 	message_publisher->notify("zozo");
 
+}
+
+TEST_CASE("State")
+{
+	using namespace State;
+
+	unique_ptr<MobileAlertState> vibration_state = make_unique<Vibration>();
+	unique_ptr<MobileAlertState> silent_state = make_unique<Silent>();
+	unique_ptr<MobileAlertState> sound_state = make_unique<Sound>();
+
+	AlertStateContext ctx(vibration_state.get());
+
+	ctx.alert();
+
+	ctx.set_state(silent_state.get());
+	ctx.alert();
+
+	ctx.set_state(sound_state.get());
+	ctx.alert();
+
+
+	 ctx.set_state(vibration_state.get());
+	 ctx.alert();
 }
