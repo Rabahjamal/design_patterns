@@ -6,4 +6,5 @@ add_executable(behavioral_patterns
     memento.h
     observer.h
     state.h
+    strategy.h
     test.cpp)

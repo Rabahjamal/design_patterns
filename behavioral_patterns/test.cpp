@@ -5,6 +5,7 @@
 #include "memento.h"
 #include "observer.h"
 #include "state.h"
+#include "strategy.h"
 
 #define CATCH_CONFIG_MAIN
 #include <catch.hpp>
@@ -172,4 +173,26 @@ TEST_CASE("State")
 
 	 ctx.set_state(vibration_state.get());
 	 ctx.alert();
+}
+
+TEST_CASE("Strategy")
+{
+	using namespace Strategy;
+
+	unique_ptr<ISocialMediaStrategy> facebook_strategy = make_unique<FacebookStrategy>();
+	unique_ptr<ISocialMediaStrategy> twitter_strategy = make_unique<TwitterStrategy>();
+
+	Context ctx(facebook_strategy.get());
+
+	ctx.connect("ahmed");
+
+	cout << "----------------------------------------------" << endl;
+
+	ctx.set_strategy(twitter_strategy.get());
+	ctx.connect("ahmed");
+
+	cout << "----------------------------------------------" << endl;
+
+	ctx.set_strategy(facebook_strategy.get());
+	ctx.connect("john");
 }
