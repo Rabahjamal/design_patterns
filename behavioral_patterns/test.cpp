@@ -6,6 +6,7 @@
 #include "observer.h"
 #include "state.h"
 #include "strategy.h"
+#include "template_method.h"
 
 #define CATCH_CONFIG_MAIN
 #include <catch.hpp>
@@ -195,4 +196,25 @@ TEST_CASE("Strategy")
 
 	ctx.set_strategy(facebook_strategy.get());
 	ctx.connect("john");
+}
+
+TEST_CASE("Template Method")
+{
+	using namespace TemplateMethod;
+
+	unique_ptr<DataMiner> data_miner = make_unique<PDFDataMiner>();
+
+	data_miner->mine("pdf_file");
+
+	cout << "----------------------" << endl;
+
+	data_miner = make_unique<CSVDataMiner>();
+
+	data_miner->mine("csv file");
+
+	cout << "----------------------" << endl;
+
+	data_miner = make_unique<DocxDataMiner>();
+
+	data_miner->mine("docx file");
 }
