@@ -8,4 +8,5 @@ add_executable(behavioral_patterns
     state.h
     strategy.h
     template_method.h
+    visitor.h
     test.cpp)

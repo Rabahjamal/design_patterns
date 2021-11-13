@@ -12,14 +12,7 @@ class DataMiner
 public:
 	DataMiner() = default;
 
-	void mine(const std::string& path) {
-		this->open_file(path);
-		this->extract_data();
-		this->parse_data();
-		this->analyze_data();
-		this->send_report();
-		this->close_file();
-	}
+	virtual void mine(const std::string& path) final;
 
 	virtual void open_file(const std::string& path) = 0;
 
@@ -37,6 +30,15 @@ public:
 
 	virtual void close_file() = 0;
 };
+
+void DataMiner::mine(const std::string& path) {
+	this->open_file(path);
+	this->extract_data();
+	this->parse_data();
+	this->analyze_data();
+	this->send_report();
+	this->close_file();
+}
 
 class PDFDataMiner : public DataMiner
 {

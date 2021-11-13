@@ -7,6 +7,7 @@
 #include "state.h"
 #include "strategy.h"
 #include "template_method.h"
+#include "visitor.h"
 
 #define CATCH_CONFIG_MAIN
 #include <catch.hpp>
@@ -217,4 +218,21 @@ TEST_CASE("Template Method")
 	data_miner = make_unique<DocxDataMiner>();
 
 	data_miner->mine("docx file");
+}
+
+TEST_CASE("Visitor")
+{
+    using namespace Visitor;
+
+    unique_ptr<RouterVisitor> linux_cfg = make_unique<LinuxConfig>();
+    unique_ptr<RouterVisitor> windows_cfg = make_unique<WindowsConfig>();
+
+    unique_ptr<Router> dlink_router = make_unique<DLinkRouter>();
+    unique_ptr<Router> tplink_router = make_unique<TPLinkRouter>();
+
+    dlink_router->accept(linux_cfg.get());
+    dlink_router->accept(windows_cfg.get());
+
+    tplink_router->accept(linux_cfg.get());
+    tplink_router->accept(windows_cfg.get());
 }
